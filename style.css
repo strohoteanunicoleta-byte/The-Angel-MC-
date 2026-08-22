@@ -949,7 +949,6 @@ footer{
 }
 
 @media (max-width:520px){
-  .wrap{ padding:0 18px; }
   .page-header{ padding:16px 0 30px; }
   .extras-divider span.label{ font-size:22px; }
 }
