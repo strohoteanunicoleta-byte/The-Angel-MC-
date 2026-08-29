@@ -1,0 +1,2967 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Reviews — The Angel MC LLC</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Cormorant:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+<div class="toast" id="toast"></div>
+<header class="wrap">
+  <nav class="navbar">
+    <a
+      href="index.html"
+      class="logo"
+      aria-label="The Angel MC LLC — home"
+    >
+      <img
+        src="images/logo.jpg"
+        alt="Angel MC logo"
+      >
+    </a>
+
+    <div
+      class="nav-links"
+      id="navLinks"
+    >
+
+      <a href="services.html">
+        Services
+      </a>
+
+      <a href="reviews.html">
+        Reviews
+      </a>
+
+      <a href="contact.html">
+        Contacts
+      </a>
+
+      <a href="appointment.html">
+        Appointment
+      </a>
+
+    </div>
+
+    <button
+      class="nav-toggle"
+      id="navToggle"
+      aria-label="Toggle menu"
+      aria-expanded="false"
+      aria-controls="navLinks"
+    >
+      <span></span>
+    </button>
+
+  </nav>
+  <div class="page-header">
+
+    <h1>
+      Reviews
+    </h1>
+
+    <button
+      type="button"
+      class="btn"
+      id="toggleWriteReview"
+    >
+
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path d="M12 20h9"></path>
+        <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"></path>
+      </svg>
+
+      Write a review
+
+    </button>
+
+  </div>
+
+
+  <!-- =========================
+       WRITE REVIEW PANEL
+  ========================== -->
+
+  <div
+    class="write-review-panel"
+    id="writeReviewPanel"
+  >
+
+    <form id="writeReviewForm">
+
+      <!-- NAME -->
+
+      <div class="form-field">
+
+        <label for="reviewName">
+          Your name
+        </label>
+
+        <input
+          type="text"
+          id="reviewName"
+          required
+          autocomplete="name"
+          placeholder="Enter your name..."
+        >
+
+      </div>
+
+
+      <!-- RATING -->
+
+      <div class="form-field">
+
+        <label>
+          Your rating
+        </label>
+
+        <div
+          class="star-picker"
+          id="starPicker"
+          role="radiogroup"
+          aria-label="Rating"
+        >
+
+          <button
+            type="button"
+            class="star"
+            data-value="1"
+            aria-label="1 star"
+          >
+            ★
+          </button>
+
+          <button
+            type="button"
+            class="star"
+            data-value="2"
+            aria-label="2 stars"
+          >
+            ★
+          </button>
+
+          <button
+            type="button"
+            class="star"
+            data-value="3"
+            aria-label="3 stars"
+          >
+            ★
+          </button>
+
+          <button
+            type="button"
+            class="star"
+            data-value="4"
+            aria-label="4 stars"
+          >
+            ★
+          </button>
+
+          <button
+            type="button"
+            class="star"
+            data-value="5"
+            aria-label="5 stars"
+          >
+            ★
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- REVIEW -->
+
+      <div class="form-field">
+
+        <label for="wr-text">
+          Your review
+        </label>
+
+        <textarea
+          id="wr-text"
+          rows="3"
+          required
+          placeholder="Tell us about your experience..."
+        ></textarea>
+
+      </div>
+
+
+      <!-- ACTIONS -->
+
+      <div class="wr-actions">
+
+        <button
+          type="submit"
+          class="btn"
+          id="wr-submit"
+        >
+          Post review
+        </button>
+
+        <span class="wr-note">
+
+          Or leave it directly on
+
+          <a
+            href="https://search.google.com/local/writereview?placeid=REPLACE_WITH_YOUR_PLACE_ID"
+            target="_blank"
+            rel="noopener"
+          >
+            Google
+          </a>.
+
+        </span>
+
+      </div>
+
+    </form>
+
+  </div>
+
+
+  <!-- =========================
+       SYNC MESSAGE
+  ========================== -->
+
+  <p
+    class="sync-note"
+    id="syncNote"
+  >
+    Reviews are connected to Sheet Monkey.
+  </p>
+
+
+  <!-- =========================
+       SUMMARY
+  ========================== -->
+
+  <div class="summary-card">
+
+    <div class="summary-score">
+
+      <div
+        class="num"
+        id="avgScore"
+      >
+        —
+      </div>
+
+      <div
+        class="label"
+        id="avgLabel"
+      >
+        No ratings yet
+      </div>
+
+      <div
+        class="dots"
+        id="avgDots"
+      ></div>
+
+      <div
+        class="summary-count"
+        id="totalCount"
+      >
+        (0)
+      </div>
+
+    </div>
+
+
+    <div
+      class="summary-bars"
+      id="summaryBars"
+    ></div>
+
+  </div>
+
+
+  <!-- =========================
+       FILTERS
+  ========================== -->
+
+  <div class="filter-row">
+
+    <select
+      class="pill-select"
+      id="ratingFilter"
+      aria-label="Filter by rating"
+    >
+
+      <option value="all">
+        All ratings
+      </option>
+
+      <option value="5">
+        Excellent (5)
+      </option>
+
+      <option value="4">
+        Good (4)
+      </option>
+
+      <option value="3">
+        Average (3)
+      </option>
+
+      <option value="2">
+        Bad (2)
+      </option>
+
+      <option value="1">
+        Terrible (1)
+      </option>
+
+    </select>
+
+
+    <select
+      class="pill-select"
+      id="sortReviews"
+      aria-label="Sort reviews"
+    >
+
+      <option value="recent">
+        Sort by: Most recent
+      </option>
+
+      <option value="highest">
+        Sort by: Highest rating
+      </option>
+
+      <option value="lowest">
+        Sort by: Lowest rating
+      </option>
+
+    </select>
+
+  </div>
+
+
+  <!-- =========================
+       POPULAR MENTIONS
+  ========================== -->
+
+  <div class="mentions-title">
+    Popular mentions
+  </div>
+
+  <div
+    class="mentions"
+    id="mentionsList"
+  ></div>
+
+  <div
+    class="mention-active"
+    id="mentionActive"
+    style="display:none;"
+  >
+
+    Showing reviews mentioning
+
+    "<span id="mentionActiveWord"></span>"
+
+    <button
+      type="button"
+      id="clearMention"
+    >
+      ✕ clear
+    </button>
+
+  </div>
+
+
+  <!-- =========================
+       REVIEWS
+  ========================== -->
+
+  <div
+    class="reviews-title"
+    id="reviewsTitle"
+  >
+    All reviews (0)
+  </div>
+
+
+  <p class="reviews-disclaimer">
+
+    Reviews are the subjective opinion of customers and not of
+    The Angel MC LLC. The Angel MC LLC performs checks on reviews
+    as part of our industry-leading work to identify and remove fake content.
+
+  </p>
+
+
+  <div id="reviewsList"></div>
+
+
+  <p
+    class="no-reviews"
+    id="noReviews"
+  >
+    No reviews match this filter yet.
+  </p>
+
+</header>
+
+
+<!-- =========================
+     FOOTER
+========================== -->
+
+<footer>
+
+  <nav class="footer-nav">
+
+    <a href="index.html#top">
+      Home
+    </a>
+
+    <a href="services.html">
+      Services
+    </a>
+
+    <a href="reviews.html">
+      Reviews
+    </a>
+
+    <a href="contact.html">
+      Contacts
+    </a>
+
+    <a href="appointment.html">
+      Appointment
+    </a>
+
+  </nav>
+
+
+  <div class="footer-social">
+
+    <!-- Instagram -->
+
+    <a
+      href="https://instagram.com/MC_the_Angel_7"
+      target="_blank"
+      rel="noopener"
+    >
+
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+
+        <defs>
+
+          <linearGradient
+            id="igGrad5"
+            x1="0%"
+            y1="100%"
+            x2="100%"
+            y2="0%"
+          >
+
+            <stop
+              offset="0%"
+              stop-color="#feda75"
+            />
+
+            <stop
+              offset="25%"
+              stop-color="#fa7e1e"
+            />
+
+            <stop
+              offset="55%"
+              stop-color="#d62976"
+            />
+
+            <stop
+              offset="80%"
+              stop-color="#962fbf"
+            />
+
+            <stop
+              offset="100%"
+              stop-color="#4f5bd5"
+            />
+
+          </linearGradient>
+
+        </defs>
+
+
+        <rect
+          x="2"
+          y="2"
+          width="20"
+          height="20"
+          rx="6"
+          fill="url(#igGrad5)"
+        />
+
+        <rect
+          x="6.2"
+          y="6.2"
+          width="11.6"
+          height="11.6"
+          rx="4"
+          fill="none"
+          stroke="#fff"
+          stroke-width="1.6"
+        />
+
+        <circle
+          cx="12"
+          cy="12"
+          r="3.1"
+          fill="none"
+          stroke="#fff"
+          stroke-width="1.6"
+        />
+
+        <circle
+          cx="17"
+          cy="7"
+          r="1.1"
+          fill="#fff"
+        />
+
+      </svg>
+
+      <span>
+        MC_the_Angel_7
+      </span>
+
+    </a>
+
+
+    <!-- Email -->
+
+    <a href="mailto:theangelmc333@gmail.com">
+
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+
+        <path
+          d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"
+          fill="#fff"
+        />
+
+        <path
+          d="M2 6l10 8 10-8"
+          fill="none"
+          stroke="#EA4335"
+          stroke-width="1.8"
+          stroke-linejoin="round"
+        />
+
+        <path
+          d="M2 6v12h4V9.2Z"
+          fill="#4285F4"
+        />
+
+        <path
+          d="M22 6v12h-4V9.2Z"
+          fill="#34A853"
+        />
+
+        <path
+          d="M6 9.2 2 6h4Z"
+          fill="#C5221F"
+        />
+
+        <path
+          d="M18 9.2 22 6h-4Z"
+          fill="#FBBC04"
+        />
+
+      </svg>
+
+      <span>
+        theangelmc333@gmail.com
+      </span>
+
+    </a>
+
+
+    <!-- Facebook -->
+
+    <a
+      href="https://www.facebook.com/profile.php?id=61557746706475"
+      target="_blank"
+      rel="noopener"
+    >
+
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+
+        <rect
+          x="2"
+          y="2"
+          width="20"
+          height="20"
+          rx="5"
+          fill="#1877F2"
+        />
+
+        <path
+          d="M14.8 8.6h1.8V5.9h-1.8c-2 0-3.4 1.4-3.4 3.4v1.6H9.5v2.7h1.9V19h2.8v-5.4h1.9l.4-2.7h-2.3V9.6c0-.6.3-1 .9-1Z"
+          fill="#fff"
+        />
+
+      </svg>
+
+      <span translate="no">
+        The Angel Massage Therapy
+      </span>
+
+    </a>
+
+  </div>
+
+
+  <div class="footer-bottom">
+
+    ©
+
+    <span id="year"></span>
+
+    The Angel MC LLC. All rights reserved.
+
+  </div>
+
+</footer>
+
+
+<script>
+const SHEET_MONKEY_URL =
+  'https://api.sheetmonkey.io/form/mtyWEHJY3roYbmZgdYEbX';
+
+const LOCAL_REVIEWS_KEY =
+  'angel_mc_reviews_v3';
+const demoReviews = [];
+
+
+let reviews = [];
+
+let activeMention = null;
+
+let selectedRating = 0;
+
+let toastTimeout;
+
+
+/* =========================================================
+   5. DATE
+========================================================= */
+
+function monthLabel(dateObj) {
+
+  const monthNames = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec'
+  ];
+
+  return `${monthNames[dateObj.getMonth()]} ${dateObj.getDate()}, ${dateObj.getFullYear()}`;
+
+}
+
+
+/* =========================================================
+   6. CREATE REVIEW
+========================================================= */
+
+function createReview({
+  name,
+  rating,
+  text,
+  id = null,
+  date = null,
+  sub = 'Website visitor'
+}) {
+
+  const d =
+    date
+      ? new Date(date)
+      : new Date();
+
+  return {
+
+    id:
+      id ||
+      `local-${Date.now()}-${Math.random()
+        .toString(36)
+        .slice(2, 8)}`,
+
+    initial:
+      (name || '?')
+        .trim()
+        .charAt(0)
+        .toUpperCase(),
+
+    name:
+      name || 'Anonymous',
+
+    sub,
+
+    when:
+      monthLabel(d),
+
+    rating:
+      Number(rating) || 5,
+
+    date:
+      d.toISOString().split('T')[0],
+
+    dateLabel:
+      `Written ${monthLabel(d)}`,
+
+    likes: 0,
+
+    liked: false,
+
+    text:
+      text || '',
+
+    replies: []
+
+  };
+
+}
+
+
+/* =========================================================
+   7. LOCAL STORAGE
+========================================================= */
+
+function saveLocalReviews() {
+
+  try {
+
+    const userReviews =
+      reviews.filter(
+        review =>
+          !String(review.id).startsWith('demo-')
+      );
+
+    localStorage.setItem(
+      LOCAL_REVIEWS_KEY,
+      JSON.stringify(userReviews)
+    );
+
+  } catch (error) {
+
+    console.warn(
+      'Could not save reviews locally.',
+      error
+    );
+
+  }
+
+}
+
+
+function loadLocalReviews() {
+
+  try {
+
+    const raw =
+      localStorage.getItem(
+        LOCAL_REVIEWS_KEY
+      );
+
+    if (!raw) {
+      return [];
+    }
+
+    const parsed =
+      JSON.parse(raw);
+
+    if (!Array.isArray(parsed)) {
+      return [];
+    }
+
+    return parsed;
+
+  } catch (error) {
+
+    console.warn(
+      'Could not load reviews locally.',
+      error
+    );
+
+    return [];
+
+  }
+
+}
+
+
+/* =========================================================
+   8. INITIALIZE
+========================================================= */
+
+function initializeReviews() {
+
+  const savedReviews =
+    loadLocalReviews();
+
+  reviews = [
+    ...savedReviews,
+    ...demoReviews
+  ];
+
+}
+
+
+/* =========================================================
+   9. SHEET MONKEY
+========================================================= */
+
+async function sendToSheetMonkey(data) {
+
+  try {
+
+    const formData =
+      new FormData();
+
+
+    formData.append(
+      'Name',
+      data.name || ''
+    );
+
+
+    formData.append(
+      'Rating',
+      String(data.rating || '')
+    );
+
+
+    formData.append(
+      'Review',
+      data.text || ''
+    );
+
+
+    formData.append(
+      'Type',
+      data.type || 'review'
+    );
+
+
+    formData.append(
+      'ReviewID',
+      data.reviewId || ''
+    );
+
+
+    formData.append(
+      'Reply',
+      data.replyText || ''
+    );
+
+
+    const response =
+      await fetch(
+        SHEET_MONKEY_URL,
+        {
+          method: 'POST',
+          body: formData
+        }
+      );
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        `Sheet Monkey returned ${response.status}`
+      );
+
+    }
+
+
+    return {
+      success: true
+    };
+
+
+  } catch (error) {
+
+    console.error(
+      'Sheet Monkey error:',
+      error
+    );
+
+
+    return {
+      success: false,
+      error: error.message
+    };
+
+  }
+
+}
+
+
+/* =========================================================
+   10. TOAST
+========================================================= */
+
+function showToast(
+  message,
+  isError = false
+) {
+
+  const toast =
+    document.getElementById('toast');
+
+  toast.textContent =
+    message;
+
+  toast.classList.toggle(
+    'error',
+    Boolean(isError)
+  );
+
+  toast.classList.add('show');
+
+  clearTimeout(toastTimeout);
+
+  toastTimeout =
+    setTimeout(
+      () => {
+        toast.classList.remove('show');
+      },
+      4500
+    );
+
+}
+
+
+/* =========================================================
+   11. STARS
+========================================================= */
+
+function dotsHtml(rating) {
+
+  let html = '';
+
+  for (
+    let i = 1;
+    i <= 5;
+    i++
+  ) {
+
+    html +=
+      `<span class="${i <= rating ? 'filled' : ''}"></span>`;
+
+  }
+
+  return html;
+
+}
+
+
+/* =========================================================
+   12. SAFE HTML
+========================================================= */
+
+function escapeHtml(value) {
+
+  return String(value || '')
+
+    .replace(/&/g, '&amp;')
+
+    .replace(/</g, '&lt;')
+
+    .replace(/>/g, '&gt;')
+
+    .replace(/"/g, '&quot;')
+
+    .replace(/'/g, '&#039;');
+
+}
+
+
+/* =========================================================
+   13. REGEX ESCAPE
+========================================================= */
+
+function escapeRegExp(str) {
+
+  return String(str)
+    .replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+}
+
+
+/* =========================================================
+   14. HIGHLIGHT
+========================================================= */
+
+function highlight(text, word) {
+
+  const safeText =
+    escapeHtml(text);
+
+  if (!word) {
+    return safeText;
+  }
+
+  const escapedWord =
+    escapeRegExp(word);
+
+  const regex =
+    new RegExp(
+      `(${escapedWord})`,
+      'gi'
+    );
+
+  return safeText.replace(
+    regex,
+    '<mark>$1</mark>'
+  );
+
+}
+
+
+/* =========================================================
+   15. SUMMARY
+========================================================= */
+
+function renderSummary() {
+
+  const total =
+    reviews.length;
+
+
+  const avg =
+    total
+      ? reviews.reduce(
+          (sum, review) =>
+            sum + Number(review.rating || 0),
+          0
+        ) / total
+      : 0;
+
+
+  const rounded =
+    Math.round(avg * 10) / 10;
+
+
+  let label =
+    'No ratings yet';
+
+
+  if (avg >= 4.5) {
+
+    label = 'Excellent';
+
+  } else if (avg >= 3.5) {
+
+    label = 'Good';
+
+  } else if (avg >= 2.5) {
+
+    label = 'Average';
+
+  } else if (avg >= 1.5) {
+
+    label = 'Bad';
+
+  } else if (total) {
+
+    label = 'Terrible';
+
+  }
+
+
+  document.getElementById(
+    'avgScore'
+  ).textContent =
+    total
+      ? rounded.toFixed(1)
+      : '—';
+
+
+  document.getElementById(
+    'avgLabel'
+  ).textContent =
+    label;
+
+
+  document.getElementById(
+    'avgDots'
+  ).innerHTML =
+    dotsHtml(
+      Math.round(avg)
+    );
+
+
+  document.getElementById(
+    'totalCount'
+  ).textContent =
+    `(${total})`;
+
+
+  const tiers = [
+
+    {
+      key: 5,
+      label: 'Excellent'
+    },
+
+    {
+      key: 4,
+      label: 'Good'
+    },
+
+    {
+      key: 3,
+      label: 'Average'
+    },
+
+    {
+      key: 2,
+      label: 'Bad'
+    },
+
+    {
+      key: 1,
+      label: 'Terrible'
+    }
+
+  ];
+
+
+  const counts =
+    tiers.map(
+      tier =>
+        reviews.filter(
+          review =>
+            Number(review.rating) === tier.key
+        ).length
+    );
+
+
+  const maxCount =
+    Math.max(
+      1,
+      ...counts
+    );
+
+
+  document.getElementById(
+    'summaryBars'
+  ).innerHTML =
+
+    tiers.map(
+      (tier, index) => `
+
+        <div class="bar-row">
+
+          <span class="bar-label">
+            ${tier.label}
+          </span>
+
+          <div class="bar-track">
+
+            <div
+              class="bar-fill"
+              style="width:${(counts[index] / maxCount) * 100}%"
+            ></div>
+
+          </div>
+
+          <span class="bar-count">
+            ${counts[index]}
+          </span>
+
+        </div>
+
+      `
+    ).join('');
+
+}
+
+
+/* =========================================================
+   16. POPULAR MENTIONS
+========================================================= */
+
+const STOPWORDS = new Set([
+
+  'the',
+  'and',
+  'was',
+  'for',
+  'with',
+  'that',
+  'this',
+  'have',
+  'had',
+  'has',
+  'are',
+  'were',
+  'from',
+  'your',
+  'you',
+  'they',
+  'their',
+  'them',
+  'very',
+  'really',
+  'just',
+  'about',
+  'after',
+  'before',
+  'into',
+  'over',
+  'than',
+  'then',
+  'been',
+  'being',
+  'more',
+  'most',
+  'some',
+  'ever',
+  'back',
+  'again',
+  'definitely',
+  'highly',
+  'when',
+  'what',
+  'which',
+  'who',
+  'would',
+  'could',
+  'should',
+  'there',
+  'here',
+  'also',
+  'good',
+  'great'
+
+]);
+
+
+function computeMentions() {
+
+  const frequency = {};
+
+  const original = {};
+
+
+  reviews.forEach(
+    review => {
+
+      const words =
+        String(review.text || '')
+          .match(/[A-Za-z']+/g) || [];
+
+
+      words.forEach(
+        word => {
+
+          const clean =
+            word.replace(
+              /^'+|'+$/g,
+              ''
+            );
+
+
+          const lower =
+            clean.toLowerCase();
+
+
+          if (
+            lower.length < 4 ||
+            STOPWORDS.has(lower)
+          ) {
+            return;
+          }
+
+
+          frequency[lower] =
+            (frequency[lower] || 0) + 1;
+
+
+          if (!original[lower]) {
+
+            original[lower] =
+              clean;
+
+          }
+
+        }
+      );
+
+    }
+  );
+
+
+  return Object.keys(frequency)
+
+    .map(
+      key => ({
+        word: key,
+        display: original[key],
+        count: frequency[key]
+      })
+    )
+
+    .filter(
+      item =>
+        item.count >= 2
+    )
+
+    .sort(
+      (a, b) =>
+        b.count - a.count
+    )
+
+    .slice(0, 8);
+
+}
+
+
+function renderMentions() {
+
+  const mentions =
+    computeMentions();
+
+
+  const container =
+    document.getElementById(
+      'mentionsList'
+    );
+
+
+  if (!mentions.length) {
+
+    container.innerHTML =
+      '<span>Not enough reviews yet for trends</span>';
+
+    return;
+
+  }
+
+
+  container.innerHTML =
+
+    mentions.map(
+      mention => `
+
+        <button
+          type="button"
+          class="${activeMention === mention.word ? 'active' : ''}"
+          data-word="${escapeHtml(mention.word)}"
+        >
+
+          ${escapeHtml(mention.display)}
+
+          <span class="count">
+            (${mention.count})
+          </span>
+
+        </button>
+
+      `
+    ).join('');
+
+
+  container
+    .querySelectorAll(
+      'button[data-word]'
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          'click',
+          () => {
+
+            const word =
+              button.getAttribute(
+                'data-word'
+              );
+
+
+            activeMention =
+              activeMention === word
+                ? null
+                : word;
+
+
+            renderMentions();
+
+            updateMentionChip();
+
+            applyFiltersAndSort();
+
+          }
+        );
+
+      }
+    );
+
+}
+
+
+function updateMentionChip() {
+
+  const chip =
+    document.getElementById(
+      'mentionActive'
+    );
+
+
+  const word =
+    document.getElementById(
+      'mentionActiveWord'
+    );
+
+
+  if (activeMention) {
+
+    word.textContent =
+      activeMention;
+
+    chip.style.display =
+      'flex';
+
+  } else {
+
+    chip.style.display =
+      'none';
+
+  }
+
+}
+
+
+document
+  .getElementById(
+    'clearMention'
+  )
+  .addEventListener(
+    'click',
+    () => {
+
+      activeMention = null;
+
+      renderMentions();
+
+      updateMentionChip();
+
+      applyFiltersAndSort();
+
+    }
+  );
+
+
+/* =========================================================
+   17. REPLIES
+========================================================= */
+
+function renderSingleReply(
+  reply,
+  reviewId,
+  index
+) {
+
+  const likeKey =
+    `${reviewId}::${index}`;
+
+
+  return `
+
+    <div class="reply">
+
+      <div class="review-head">
+
+        <div class="avatar">
+
+          ${escapeHtml(
+            (reply.name || '?')
+              .trim()
+              .charAt(0)
+              .toUpperCase()
+          )}
+
+        </div>
+
+
+        <div class="review-meta">
+
+          <div class="name">
+            ${escapeHtml(reply.name)}
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <p class="review-text">
+
+        ${highlight(
+          reply.text,
+          activeMention
+        )}
+
+      </p>
+
+
+      <div class="reply-footer">
+
+        <button
+          type="button"
+          class="like ${reply.liked ? 'liked' : ''}"
+          data-reply-like="${escapeHtml(likeKey)}"
+          aria-label="Like this reply"
+        >
+
+          <svg viewBox="0 0 24 24">
+
+            <path d="M7 10v11H4a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1Zm4 11h7.5a2 2 0 0 0 2-1.6l1.4-7A2 2 0 0 0 20 10h-5.5V5a2.5 2.5 0 0 0-5 0v1.5L7 10"></path>
+
+          </svg>
+
+
+          <span class="like-count">
+            ${Number(reply.likes || 0)}
+          </span>
+
+        </button>
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+function renderReplies(review) {
+
+  const replies =
+    review.replies || [];
+
+
+  if (!replies.length) {
+    return '';
+  }
+
+
+  const allHtml =
+    replies
+      .map(
+        (reply, index) =>
+          renderSingleReply(
+            reply,
+            review.id,
+            index
+          )
+      )
+      .join('');
+
+
+  const count =
+    replies.length;
+
+
+  const answerWord =
+    count === 1
+      ? 'answer'
+      : 'answers';
+
+
+  return `
+
+    <div class="replies-block">
+
+      <div
+        class="hidden-replies"
+        id="hiddenReplies-${escapeHtml(review.id)}"
+        style="display:none;"
+      >
+
+        ${allHtml}
+
+      </div>
+
+
+      <div
+        class="reply-more"
+        data-toggle-hidden="${escapeHtml(review.id)}"
+        data-hidden-count="${count}"
+      >
+
+        Show ${count} hidden ${answerWord}
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================================================
+   18. RENDER REVIEWS
+========================================================= */
+
+function renderReviews(list) {
+
+  const container =
+    document.getElementById(
+      'reviewsList'
+    );
+
+
+  const noReviews =
+    document.getElementById(
+      'noReviews'
+    );
+
+
+  document.getElementById(
+    'reviewsTitle'
+  ).textContent =
+    `All reviews (${list.length})`;
+
+
+  if (!list.length) {
+
+    container.innerHTML =
+      '';
+
+    noReviews.style.display =
+      'block';
+
+    return;
+
+  }
+
+
+  noReviews.style.display =
+    'none';
+
+
+  container.innerHTML =
+
+    list.map(
+      review => `
+
+        <div class="review">
+
+          <div class="review-head">
+
+            <div class="avatar">
+
+              ${escapeHtml(
+                review.initial
+              )}
+
+            </div>
+
+
+            <div class="review-meta">
+
+              <div class="name">
+
+                ${escapeHtml(
+                  review.name
+                )}
+
+              </div>
+
+
+              <div class="sub">
+
+                ${escapeHtml(
+                  review.sub
+                )}
+
+              </div>
+
+
+              <div class="when">
+
+                ${escapeHtml(
+                  review.when
+                )}
+
+              </div>
+
+
+              <div class="review-dots">
+
+                ${dotsHtml(
+                  Number(review.rating)
+                )}
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <p class="review-text">
+
+            ${highlight(
+              review.text,
+              activeMention
+            )}
+
+          </p>
+
+
+          <div class="review-footer">
+
+            <span>
+
+              ${escapeHtml(
+                review.dateLabel
+              )}
+
+            </span>
+
+
+            <div class="actions">
+
+              <button
+                type="button"
+                class="like ${review.liked ? 'liked' : ''}"
+                data-like="${escapeHtml(review.id)}"
+                aria-label="Like this review"
+              >
+
+                <svg viewBox="0 0 24 24">
+
+                  <path d="M7 10v11H4a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1Zm4 11h7.5a2 2 0 0 0 2-1.6l1.4-7A2 2 0 0 0 20 10h-5.5V5a2.5 2.5 0 0 0-5 0v1.5L7 10"></path>
+
+                </svg>
+
+
+                <span class="like-count">
+
+                  ${Number(
+                    review.likes || 0
+                  )}
+
+                </span>
+
+              </button>
+
+
+              <button
+                type="button"
+                class="reply-toggle"
+                data-reply-toggle="${escapeHtml(review.id)}"
+              >
+
+                Reply
+
+              </button>
+
+            </div>
+
+          </div>
+
+
+          ${renderReplies(review)}
+
+
+          <!-- =========================
+               REPLY FORM
+          ========================== -->
+
+          <div
+            class="reply-admin-form"
+            id="replyForm-${escapeHtml(review.id)}"
+          >
+
+            <!-- NAME -->
+
+            <input
+            class="reply-name-input"
+              type="text"
+              placeholder="Your name..."
+              data-rf-name="${escapeHtml(review.id)}"
+              autocomplete="name"
+            >
+
+
+            <!-- REPLY -->
+
+            <textarea
+              placeholder="Write a reply..."
+              data-rf-text="${escapeHtml(review.id)}"
+            ></textarea>
+
+
+            <div class="rf-actions">
+
+              <button
+                type="button"
+                class="rf-submit"
+                data-rf-submit="${escapeHtml(review.id)}"
+              >
+                Post
+              </button>
+
+
+              <button
+                type="button"
+                class="rf-cancel"
+                data-rf-cancel="${escapeHtml(review.id)}"
+              >
+                Cancel
+              </button>
+
+            </div>
+
+
+            <div
+              class="reply-admin-error"
+              id="replyError-${escapeHtml(review.id)}"
+            ></div>
+
+          </div>
+
+        </div>
+
+      `
+    ).join('');
+
+
+  /* =====================================================
+     LIKE MAIN REVIEW
+  ===================================================== */
+
+  container
+    .querySelectorAll(
+      '[data-like]'
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          'click',
+          () => {
+
+            const id =
+              button.getAttribute(
+                'data-like'
+              );
+
+
+            const review =
+              reviews.find(
+                item =>
+                  String(item.id) ===
+                  String(id)
+              );
+
+
+            if (!review) {
+              return;
+            }
+
+
+            review.liked =
+              !review.liked;
+
+
+            review.likes =
+              Math.max(
+                0,
+                Number(review.likes || 0) +
+                  (review.liked ? 1 : -1)
+              );
+
+
+            button.classList.toggle(
+              'liked',
+              review.liked
+            );
+
+
+            button.querySelector(
+              '.like-count'
+            ).textContent =
+              review.likes;
+
+
+            saveLocalReviews();
+
+          }
+        );
+
+      }
+    );
+
+
+  /* =====================================================
+     LIKE REPLY
+  ===================================================== */
+
+  container
+    .querySelectorAll(
+      '[data-reply-like]'
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          'click',
+          () => {
+
+            const key =
+              button.getAttribute(
+                'data-reply-like'
+              );
+
+
+            const parts =
+              key.split('::');
+
+
+            const reviewId =
+              parts[0];
+
+
+            const replyIndex =
+              Number(parts[1]);
+
+
+            const review =
+              reviews.find(
+                item =>
+                  String(item.id) ===
+                  String(reviewId)
+              );
+
+
+            const reply =
+              review &&
+              review.replies &&
+              review.replies[replyIndex];
+
+
+            if (!reply) {
+              return;
+            }
+
+
+            reply.liked =
+              !reply.liked;
+
+
+            reply.likes =
+              Math.max(
+                0,
+                Number(reply.likes || 0) +
+                  (reply.liked ? 1 : -1)
+              );
+
+
+            button.classList.toggle(
+              'liked',
+              reply.liked
+            );
+
+
+            button.querySelector(
+              '.like-count'
+            ).textContent =
+              reply.likes;
+
+
+            saveLocalReviews();
+
+          }
+        );
+
+      }
+    );
+
+
+  /* =====================================================
+     OPEN REPLY FORM
+  ===================================================== */
+
+  container
+    .querySelectorAll(
+      '[data-reply-toggle]'
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          'click',
+          () => {
+
+            const id =
+              button.getAttribute(
+                'data-reply-toggle'
+              );
+
+
+            const form =
+              document.getElementById(
+                `replyForm-${id}`
+              );
+
+
+            if (!form) {
+              return;
+            }
+
+
+            form.classList.toggle(
+              'open'
+            );
+
+
+            if (
+              form.classList.contains(
+                'open'
+              )
+            ) {
+
+              const nameInput =
+                form.querySelector(
+                  '[data-rf-name]'
+                );
+
+
+              if (nameInput) {
+
+                nameInput.focus();
+
+              }
+
+            }
+
+          }
+        );
+
+      }
+    );
+
+
+  /* =====================================================
+     SHOW / HIDE REPLIES
+  ===================================================== */
+
+  container
+    .querySelectorAll(
+      '[data-toggle-hidden]'
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          'click',
+          () => {
+
+            const id =
+              button.getAttribute(
+                'data-toggle-hidden'
+              );
+
+
+            const count =
+              Number(
+                button.getAttribute(
+                  'data-hidden-count'
+                )
+              );
+
+
+            const hiddenBox =
+              document.getElementById(
+                `hiddenReplies-${id}`
+              );
+
+
+            if (!hiddenBox) {
+              return;
+            }
+
+
+            const nowShown =
+              hiddenBox.style.display ===
+              'none';
+
+
+            hiddenBox.style.display =
+              nowShown
+                ? 'block'
+                : 'none';
+
+
+            button.textContent =
+              nowShown
+                ? 'Hide answers'
+                : `Show ${count} hidden ${
+                    count === 1
+                      ? 'answer'
+                      : 'answers'
+                  }`;
+
+          }
+        );
+
+      }
+    );
+
+
+  /* =====================================================
+     CANCEL REPLY
+  ===================================================== */
+
+  container
+    .querySelectorAll(
+      '[data-rf-cancel]'
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          'click',
+          () => {
+
+            const id =
+              button.getAttribute(
+                'data-rf-cancel'
+              );
+
+
+            const form =
+              document.getElementById(
+                `replyForm-${id}`
+              );
+
+
+            if (form) {
+
+              form.classList.remove(
+                'open'
+              );
+
+            }
+
+          }
+        );
+
+      }
+    );
+
+
+  /* =====================================================
+     POST REPLY
+  ===================================================== */
+
+  container
+    .querySelectorAll(
+      '[data-rf-submit]'
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          'click',
+          async () => {
+
+            const id =
+              button.getAttribute(
+                'data-rf-submit'
+              );
+
+
+            const nameInput =
+              container.querySelector(
+                `[data-rf-name="${CSS.escape(id)}"]`
+              );
+
+
+            const textInput =
+              container.querySelector(
+                `[data-rf-text="${CSS.escape(id)}"]`
+              );
+
+
+            const errorEl =
+              document.getElementById(
+                `replyError-${id}`
+              );
+
+
+            if (
+              !nameInput ||
+              !textInput ||
+              !errorEl
+            ) {
+              return;
+            }
+
+
+            const replyName =
+              nameInput.value.trim();
+
+
+            const replyText =
+              textInput.value.trim();
+
+
+            errorEl.classList.remove(
+              'show'
+            );
+
+
+            /* NAME REQUIRED */
+
+            if (!replyName) {
+
+              errorEl.textContent =
+                'Please enter your name before posting.';
+
+              errorEl.classList.add(
+                'show'
+              );
+
+              nameInput.focus();
+
+              return;
+
+            }
+
+
+            /* REPLY REQUIRED */
+
+            if (!replyText) {
+
+              errorEl.textContent =
+                'Please write a reply before posting.';
+
+              errorEl.classList.add(
+                'show'
+              );
+
+              textInput.focus();
+
+              return;
+
+            }
+
+
+            button.disabled =
+              true;
+
+
+            button.textContent =
+              'Posting…';
+
+
+            const review =
+              reviews.find(
+                item =>
+                  String(item.id) ===
+                  String(id)
+              );
+
+
+            /* =================================================
+               SAVE REPLY TO SHEET MONKEY
+            ================================================= */
+
+            const result =
+              await sendToSheetMonkey({
+
+                name:
+                  replyName,
+
+                rating:
+                  review
+                    ? review.rating
+                    : '',
+
+                text:
+                  review
+                    ? review.text
+                    : '',
+
+                type:
+                  'reply',
+
+                reviewId:
+                  id,
+
+                replyText:
+                  replyText
+
+              });
+
+
+            button.disabled =
+              false;
+
+
+            button.textContent =
+              'Post';
+
+
+            if (!result.success) {
+
+              errorEl.textContent =
+                'The reply could not be saved. Please try again.';
+
+              errorEl.classList.add(
+                'show'
+              );
+
+
+              showToast(
+                'Could not save the reply.',
+                true
+              );
+
+
+              return;
+
+            }
+
+
+            /* =================================================
+               ADD REPLY TO WEBSITE
+            ================================================= */
+
+            if (review) {
+
+              if (!review.replies) {
+
+                review.replies = [];
+
+              }
+
+
+              review.replies.push({
+
+                name:
+                  replyName,
+
+                text:
+                  replyText,
+
+                likes:
+                  0,
+
+                liked:
+                  false
+
+              });
+
+            }
+
+
+            saveLocalReviews();
+
+
+            /* CLEAR FORM */
+
+            nameInput.value =
+              '';
+
+            textInput.value =
+              '';
+
+
+            const form =
+              document.getElementById(
+                `replyForm-${id}`
+              );
+
+
+            if (form) {
+
+              form.classList.remove(
+                'open'
+              );
+
+            }
+
+
+            showToast(
+              'Your reply has been saved.'
+            );
+
+
+            applyFiltersAndSort();
+
+          }
+        );
+
+      }
+    );
+
+}
+
+
+/* =========================================================
+   19. FILTER + SORT
+========================================================= */
+
+function applyFiltersAndSort() {
+
+  const ratingFilter =
+    document.getElementById(
+      'ratingFilter'
+    ).value;
+
+
+  const sortValue =
+    document.getElementById(
+      'sortReviews'
+    ).value;
+
+
+  let list =
+    reviews.slice();
+
+
+  /* RATING FILTER */
+
+  if (
+    ratingFilter !==
+    'all'
+  ) {
+
+    list =
+      list.filter(
+        review =>
+          Number(review.rating) ===
+          Number(ratingFilter)
+      );
+
+  }
+
+
+  /* MENTION FILTER */
+
+  if (activeMention) {
+
+    const regex =
+      new RegExp(
+        `\\b${escapeRegExp(activeMention)}\\b`,
+        'i'
+      );
+
+
+    list =
+      list.filter(
+        review =>
+          regex.test(
+            review.text
+          )
+          ||
+          (review.replies || [])
+            .some(
+              reply =>
+                regex.test(
+                  reply.text
+                )
+            )
+      );
+
+  }
+
+
+  /* SORT */
+
+  if (
+    sortValue ===
+    'recent'
+  ) {
+
+    list.sort(
+      (a, b) =>
+        new Date(b.date) -
+        new Date(a.date)
+    );
+
+  }
+
+
+  else if (
+    sortValue ===
+    'highest'
+  ) {
+
+    list.sort(
+      (a, b) =>
+        Number(b.rating) -
+        Number(a.rating)
+    );
+
+  }
+
+
+  else if (
+    sortValue ===
+    'lowest'
+  ) {
+
+    list.sort(
+      (a, b) =>
+        Number(a.rating) -
+        Number(b.rating)
+    );
+
+  }
+
+
+  renderReviews(
+    list
+  );
+
+}
+
+
+/* =========================================================
+   20. FILTER EVENTS
+========================================================= */
+
+document
+  .getElementById(
+    'ratingFilter'
+  )
+  .addEventListener(
+    'change',
+    applyFiltersAndSort
+  );
+
+
+document
+  .getElementById(
+    'sortReviews'
+  )
+  .addEventListener(
+    'change',
+    applyFiltersAndSort
+  );
+
+
+/* =========================================================
+   21. WRITE REVIEW
+========================================================= */
+
+const toggleWriteReview =
+  document.getElementById(
+    'toggleWriteReview'
+  );
+
+
+const writeReviewPanel =
+  document.getElementById(
+    'writeReviewPanel'
+  );
+
+
+toggleWriteReview.addEventListener(
+  'click',
+  () => {
+
+    writeReviewPanel.classList.toggle(
+      'open'
+    );
+
+
+    if (
+      writeReviewPanel.classList.contains(
+        'open'
+      )
+    ) {
+
+      document
+        .getElementById(
+          'reviewName'
+        )
+        .focus();
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   22. STAR PICKER
+========================================================= */
+
+const starButtons =
+  document.querySelectorAll(
+    '#starPicker .star'
+  );
+
+
+starButtons.forEach(
+  star => {
+
+    star.addEventListener(
+      'click',
+      () => {
+
+        selectedRating =
+          Number(
+            star.getAttribute(
+              'data-value'
+            )
+          );
+
+
+        starButtons.forEach(
+          button => {
+
+            button.classList.toggle(
+              'filled',
+              Number(
+                button.getAttribute(
+                  'data-value'
+                )
+              ) <= selectedRating
+            );
+
+          }
+        );
+
+      }
+    );
+
+  }
+);
+
+
+/* =========================================================
+   23. WRITE REVIEW FORM
+========================================================= */
+
+document
+  .getElementById(
+    'writeReviewForm'
+  )
+  .addEventListener(
+    'submit',
+    async event => {
+
+      event.preventDefault();
+
+
+      const name =
+        document
+          .getElementById(
+            'reviewName'
+          )
+          .value
+          .trim();
+
+
+      const text =
+        document
+          .getElementById(
+            'wr-text'
+          )
+          .value
+          .trim();
+
+
+      /* NAME */
+
+      if (!name) {
+
+        showToast(
+          'Please enter your name.',
+          true
+        );
+
+
+        document
+          .getElementById(
+            'reviewName'
+          )
+          .focus();
+
+
+        return;
+
+      }
+
+
+      /* RATING + REVIEW */
+
+      if (
+        !text ||
+        !selectedRating
+      ) {
+
+        showToast(
+          'Please add a rating and a short review.',
+          true
+        );
+
+        return;
+
+      }
+
+
+      const submitButton =
+        document.getElementById(
+          'wr-submit'
+        );
+
+
+      submitButton.disabled =
+        true;
+
+
+      submitButton.textContent =
+        'Posting…';
+
+
+      /* =================================================
+         SAVE TO SHEET MONKEY
+      ================================================= */
+
+      const result =
+        await sendToSheetMonkey({
+
+          name:
+            name,
+
+          rating:
+            selectedRating,
+
+          text:
+            text,
+
+          type:
+            'review',
+
+          reviewId:
+            '',
+
+          replyText:
+            ''
+
+        });
+
+
+      /* ERROR */
+
+      if (!result.success) {
+
+        submitButton.disabled =
+          false;
+
+        submitButton.textContent =
+          'Post review';
+
+
+        showToast(
+          'The review could not be saved. Please try again.',
+          true
+        );
+
+
+        return;
+
+      }
+
+
+      /* =================================================
+         CREATE LOCAL REVIEW
+      ================================================= */
+
+      const newReview =
+        createReview({
+
+          name:
+            name,
+
+          rating:
+            selectedRating,
+
+          text:
+            text
+
+        });
+
+
+      reviews.unshift(
+        newReview
+      );
+
+
+      saveLocalReviews();
+
+
+      /* RESET */
+
+      document
+        .getElementById(
+          'writeReviewForm'
+        )
+        .reset();
+
+
+      starButtons.forEach(
+        star =>
+          star.classList.remove(
+            'filled'
+          )
+      );
+
+
+      selectedRating =
+        0;
+
+
+      writeReviewPanel.classList.remove(
+        'open'
+      );
+
+
+      submitButton.disabled =
+        false;
+
+
+      submitButton.textContent =
+        'Post review';
+
+
+      document.getElementById(
+        'syncNote'
+      ).textContent =
+        'Review saved successfully to Google Sheets.';
+
+
+      document.getElementById(
+        'syncNote'
+      ).classList.remove(
+        'error'
+      );
+
+
+      showToast(
+        'Your review has been posted — thank you! 🙏'
+      );
+
+
+      /* RESET FILTERS */
+
+      document.getElementById(
+        'ratingFilter'
+      ).value =
+        'all';
+
+
+      document.getElementById(
+        'sortReviews'
+      ).value =
+        'recent';
+
+
+      activeMention =
+        null;
+
+
+      updateMentionChip();
+
+      renderSummary();
+
+      renderMentions();
+
+      applyFiltersAndSort();
+
+    }
+  );
+
+
+/* =========================================================
+   24. YEAR
+========================================================= */
+
+document.getElementById(
+  'year'
+).textContent =
+  new Date().getFullYear();
+
+
+/* =========================================================
+   25. INITIAL LOAD
+========================================================= */
+
+initializeReviews();
+
+renderSummary();
+
+renderMentions();
+
+applyFiltersAndSort();
+
+
+/* =========================================================
+   26. STATUS
+========================================================= */
+
+document.getElementById(
+  'syncNote'
+).textContent =
+  'Reviews are connected to Sheet Monkey for saving.';
+
+</script>
+
+</body>
+</html>
